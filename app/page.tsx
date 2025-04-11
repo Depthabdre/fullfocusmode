@@ -1,103 +1,207 @@
-import Image from "next/image";
+/* eslint-disable react/prop-types */
 
-export default function Home() {
+import { useState, useEffect, useRef,useCallback } from "react";
+import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "@app/Components";
+import prequotes from "./Quote";
+
+
+
+export default function App() {
+  const [isRun, setIsRun] = useState(false);
+  const [totalSeconds, setTotalSeconds] = useState(0);
+  const [quotes, setQuotes] = useState(prequotes);  // Fixed spelling here
+  const intervalId = useRef(null); // Store interval reference
+  const TotalSessionMinute = useRef(30)
+  const [isBreak,setBreak] = useState(false)
+  const [isPause,setIsPause] = useState(false)
+  const [mode, setMode] = useState("");
+  let currentSessionMinute = useRef(30);
+  let sessionBreakPoint = useRef([1,1]); // for enjoing session and  break respectively 
+  const [isVisible, setIsVisible] = useState(false);
+  let minutes = useRef(0);
+
+  
+
+  useEffect(() => {
+
+    if (isRun && !isPause) {
+      intervalId.current = setInterval(() => {
+        setTotalSeconds(prevSeconds => prevSeconds + 1);
+      }, 1000);
+      
+    } else {
+      clearInterval(intervalId.current);
+     
+    }
+
+    // Cleanup function to avoid memory leaks
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current);
+      }
+    };
+  }, [isRun,isPause]);
+
+  const onClose = useCallback(() => {
+    setIsVisible((prev) => !prev); // toggle visibility
+  }, []);
+  
+
+ useEffect(()=>{
+    // if (!isRun) return;
+  
+    if (TotalSessionMinute.current >= 30 && !isBreak) {
+      minutes.current = 30 - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        TotalSessionMinute.current -= 30;
+  
+        if (TotalSessionMinute.current >= 5) 
+          currentSessionMinute.current = 5;
+        else 
+          currentSessionMinute.current = TotalSessionMinute.current;
+  
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        sessionBreakPoint.current[0] += 1;
+        setTotalSeconds(0);
+        setBreak(true);
+      }
+    } 
+    else if (TotalSessionMinute.current < 30 && !isBreak) {
+      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        setIsRun(false);
+      }
+    } 
+    else if (TotalSessionMinute.current >= 5 && isBreak) {
+      minutes.current = 5 - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        TotalSessionMinute.current -= 5;
+  
+        if (TotalSessionMinute.current >= 30) 
+          currentSessionMinute.current = 30;
+        else 
+          currentSessionMinute.current = TotalSessionMinute.current;
+  
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        sessionBreakPoint.current[1] += 1;
+        setTotalSeconds(0);
+        setBreak(false);
+      }
+    } 
+    else {
+      minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+  
+      if (minutes.current == 0) {
+        TotalSessionMinute.current = 0;
+  
+        onClose();
+  
+        const audio = new Audio("/Remainder.mp3");
+        audio.play();
+  
+        setTimeout(() => {
+          audio.play();
+        }, 9000);
+  
+        setTimeout(() => {
+          onClose();
+        }, 18000);
+  
+        setIsRun(false);
+      }
+    }
+  } ,  [totalSeconds, isRun, isBreak, isVisible, onClose] );
+  
+
+  function clickHandler() {
+    setTotalSeconds(0)
+    setIsPause(false)
+    setIsRun(prev => !prev);
+  }
+  function pauseHandler(){
+    setIsPause(prevPause => !prevPause)
+  }
+
+ 
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    
+              <>
+               {/* {!isRun ? <FloatingButton /> : '' } */}
+               <ThemeToggle />
+              
+                <Mode isPause={isPause} mode={mode} setMode={setMode} />
+                <section className=" grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-center w-full h-full md:p-10">
+                {isRun ? (
+                  <TimeStarter
+                    isPause={isPause}
+                    TotalSessionMinute={TotalSessionMinute}
+                    pauseHandler={pauseHandler}
+                    sessionBreakPoint={sessionBreakPoint}
+                    clickHandler={clickHandler}
+                    isRun={isRun}
+                    totalSeconds={totalSeconds}
+                    minutes={minutes.current}
+                    currentSessionMinute={currentSessionMinute}
+                    
+                  />
+                ) : (
+                  <FocusSession
+                    currentSessionMinute={currentSessionMinute}
+                    TotalSessionMinute={TotalSessionMinute}
+                    setIsRun={setIsRun}
+                    mode={mode}
+                    minutes={minutes}
+                    
+                  />
+                )}
+                <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun}  />
+              </section>
+             
+              <ProgressTracker/>
+              <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
+              </>
+           
+         
   );
 }
