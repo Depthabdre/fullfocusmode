@@ -1,43 +1,34 @@
+'use client'
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 function Quotes({ quotes, setQuotes, isRun }) {
   const [currentQuote, setCurrentQuote] = useState("");
   const [displayedQuote, setDisplayedQuote] = useState("");
   const [newQuote, setNewQuote] = useState("");
-  const disquote = useRef("")
 
- 
   useEffect(() => {
     if (quotes.length > 0) {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       setCurrentQuote(quotes[randomIndex]);
     }
-  }, [quotes,isRun]); // only recreate if quotes changes
+  }, [quotes]);
 
   useEffect(() => {
     setDisplayedQuote("");
-    disquote.current = "";
     let index = 0;
-    
-    if (!currentQuote) return;
-    // Display the quote one character at a time
     const interval = setInterval(() => {
       if (index < currentQuote.length) {
         setDisplayedQuote((prev) => prev + currentQuote[index]);
-        disquote.current += currentQuote[index];
-        // console.log(disquote.current);
         index++;
-        
       } else {
         clearInterval(interval);
       }
-    }, 80);
-  
-    // Cleanup to clear the interval when effect re-runs or component unmounts.
+    }, 50);
+
     return () => clearInterval(interval);
-  }, [currentQuote]); // now the effect runs when currentQuote changes
+  }, [currentQuote]);
 
   function newQuoteHandler() {
     if (newQuote.trim()) {
@@ -77,8 +68,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
         ""
       )}
       <div className="w-full flex justify-center items-center text-center text-gray-900 dark:text-gray-100 font-sans">
-        {/* <p className="text-gray-900  dark:text-white font-bold text-lg">{displayedQuote}</p> */}
-        <p className={clsx("text-gray-900 dark:text-white font-bold", isRun ? "text-3xl":"text-xl")}>{disquote.current}</p>
+        <p className="text-gray-900 dark:text-white font-bold text-lg">{displayedQuote}</p>
       </div>
     </div>
   );

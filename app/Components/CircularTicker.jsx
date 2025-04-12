@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
@@ -43,9 +44,15 @@ function CircularTicker({ children, activeColors }) {
   );
 }
 
+// Add PropTypes for validation
 CircularTicker.propTypes = {
   children: PropTypes.node,
-  activeColors: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  activeColors: PropTypes.arrayOf(PropTypes.bool).isRequired, // Ensure activeColors is an array of booleans
+};
+
+// Default props (optional)
+CircularTicker.defaultProps = {
+  children: null,
 };
 
 export default CircularTicker;

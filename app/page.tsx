@@ -1,8 +1,12 @@
+'use client'
 /* eslint-disable react/prop-types */
 
 import { useState, useEffect, useRef,useCallback } from "react";
-import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "@app/Components";
+import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker , FocusSession } from "./Components";
 import prequotes from "./Quote";
+import './globals.css'
+
+
 
 
 

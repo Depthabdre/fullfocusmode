@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { ArrowUp, ArrowDown, Play } from "lucide-react";

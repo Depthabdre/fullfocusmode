@@ -1,3 +1,4 @@
+'use client'
 // Desc: This component is responsible for displaying the timer and the circular progress bar. It also displays the current session and break point. It also has a stop button and a pause/play button.
 import { Play, Pause } from "lucide-react";
 import PropTypes from "prop-types";
