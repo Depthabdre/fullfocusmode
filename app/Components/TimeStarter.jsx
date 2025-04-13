@@ -11,6 +11,7 @@ function TimeStarter({
   pauseHandler,
   isPause,
   clickHandler,
+  isRun,
   currentSessionMinute,
   sessionBreakPoint,
   TotalSessionMinute,
@@ -18,7 +19,7 @@ function TimeStarter({
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
 
   useEffect(() => {
-    let increment = currentSessionMinute.current * 60 / 24;
+    let increment = (currentSessionMinute.current * 60) / 24;
     let index = Math.floor(totalSeconds / increment) - 1;
 
     setActiveColors((prevActiveColors) =>
@@ -78,10 +79,11 @@ TimeStarter.propTypes = {
   minutes: PropTypes.number.isRequired,
   pauseHandler: PropTypes.func.isRequired,
   isPause: PropTypes.bool.isRequired,
+  isRun: PropTypes.bool.isRequired,
   clickHandler: PropTypes.func.isRequired,
-  currentSessionMinute: PropTypes.object.isRequired,
-  sessionBreakPoint: PropTypes.object.isRequired,
-  TotalSessionMinute: PropTypes.object.isRequired,
+  currentSessionMinute: PropTypes.object.isRequired, // React.RefObject<number>
+  sessionBreakPoint: PropTypes.object.isRequired, // React.RefObject<number[]>
+  TotalSessionMinute: PropTypes.object.isRequired, // React.RefObject<number>
 };
 
 export default TimeStarter;
