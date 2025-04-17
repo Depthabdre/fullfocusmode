@@ -33,6 +33,10 @@ function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute
 
   function onChangeHandler(e) {
     let totminutes = parseInt(e.target.value);
+    if (isNaN(totminutes)) {
+      totminutes = "";
+    }
+
     setTotalMinutes(totminutes);
   }
 
