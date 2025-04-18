@@ -9,23 +9,33 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-export function LoginForm({
+
+export default function SignUpForm({
   className,
   setIsLogin,
   ...props
-}: React.ComponentPropsWithoutRef<"div"> & { setIsLogin: (isLogin: boolean) => void }) {
+}: React.ComponentPropsWithoutRef<"div"> & { setIsLogin: (value: boolean) => void }) {
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Sign Up</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your details below to create a new account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Your full name"
+                  required
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -36,40 +46,32 @@ export function LoginForm({
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" required />
               </div>
               <Button type="submit" className="w-full">
-                Login
+                Sign Up
               </Button>
               <Button variant="outline" className="w-full">
-                Login with Google
+                Sign up with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Already have an account?{" "}
               <a
                 href="#"
                 className="underline underline-offset-4"
                 onClick={(e) => {
-                  e.preventDefault();
-                  setIsLogin(false);
+                  e.preventDefault()
+                  setIsLogin(true)
                 }}
               >
-                Sign up
+                Login
               </a>
             </div>
           </form>
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
