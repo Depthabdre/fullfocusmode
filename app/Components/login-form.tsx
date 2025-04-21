@@ -9,12 +9,15 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-export function LoginForm({
-  className,
-  setIsLogin,
-  ...props
-}: React.ComponentPropsWithoutRef<"div"> & { setIsLogin: (isLogin: boolean) => void }) {
+export default function  LoginForm({ 
+  className, 
+  setIsLogin, 
+  ...props 
+}: React.ComponentPropsWithoutRef<"div"> & { 
+  setIsLogin: (value: boolean) => void 
+}) {
   return (
+    <>
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
@@ -71,5 +74,6 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }
