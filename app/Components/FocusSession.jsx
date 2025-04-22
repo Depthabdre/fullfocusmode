@@ -41,9 +41,9 @@ function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute
   }
 
   return (
-    <section className="flex flex-col justify-start items-center shadow-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-8 rounded-lg gap-4 select-none">
+    <section className="flex flex-col justify-start items-center shadow-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 rounded-lg gap-4 select-none">
       <div>
-        <h1 className="font-extrabold text-2xl md:text-3xl text-center text-gray-900 dark:text-white">
+        <h1 className="font-bold text-2xl md:text-3xl text-center text-gray-900 dark:text-white">
           Focus here and now
         </h1>
       </div>

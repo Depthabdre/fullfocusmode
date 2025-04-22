@@ -14,12 +14,8 @@ export default function App() {
   const [isPause, setIsPause] = useState(false);
   const [mode, setMode] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  // This flag prevents repeated notification triggers until the next session/break change.
-  const [hasNotified, setHasNotified] = useState(false);
 
   const intervalId = useRef<NodeJS.Timeout | null>(null);
-  const notificationTimeout1 = useRef<NodeJS.Timeout | null>(null);
-  const notificationTimeout2 = useRef<NodeJS.Timeout | null>(null);
 
   const TotalSessionMinute = useRef(30);
   const currentSessionMinute = useRef(30);
@@ -54,10 +50,6 @@ export default function App() {
   // Timer interval effect
   useEffect(() => {
     // Reset notification flag if timer is reset manually
-    if (!isRun) {
-      setHasNotified(false);
-      setTotalSeconds(0);
-    }
     if (isRun && !isPause) {
       intervalId.current = setInterval(() => {
         setTotalSeconds((prevSeconds) => prevSeconds + 1);
@@ -77,98 +69,95 @@ export default function App() {
 
   // Main effect checking for session/break boundaries
   useEffect(() => {
-    // Reset the notification flag when the session state changes
-    if (totalSeconds === 0) {
-      setHasNotified(false);
-    }
-
+    
     // Check current mode and calculate remaining minutes
     if (!isBreak) {
       // Work Session Mode
       if (TotalSessionMinute.current >= 30) {
         minutes.current = 30 - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 && !hasNotified) {
+        if (minutes.current <= 0 ) {
           console.log("Work session completed. Initiating break.");
-          setHasNotified(true);
+          // setHasNotified(true);
           TotalSessionMinute.current -= 30;
           currentSessionMinute.current = TotalSessionMinute.current >= 5 ? 5 : TotalSessionMinute.current;
+
+          setTotalSeconds(0);
+          sessionBreakPoint.current[0] += 1;
+          setBreak(true);
+
           onClose();
           playAudio();
-          // Schedule subsequent actions
-          notificationTimeout1.current = setTimeout(playAudio, 9000);
-          notificationTimeout2.current = setTimeout(() => {
-            onClose();
-            // Prepare for break session by resetting timer and flag
-            setTotalSeconds(0);
-            setHasNotified(false);
-            sessionBreakPoint.current[0] += 1;
-            setBreak(true);
-          }, 18000);
+          setTimeout(playAudio, 9000);
+          setTimeout(() => {
+                onClose();
+              }, 18000);
         }
       } else { // When TotalSessionMinute.current < 30 (final session work period)
         minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 && !hasNotified) {
+        if (minutes.current <= 0 ) {
           console.log("Final work session completed.");
-          setHasNotified(true);
+          setIsRun(false);
+          setTotalSeconds(0);
+          TotalSessionMinute.current = 0;
+
           onClose();
           playAudio();
-          notificationTimeout1.current = setTimeout(playAudio, 9000);
-          notificationTimeout2.current = setTimeout(() => {
+          setTimeout(playAudio, 9000);
+          setTimeout(() => {
             onClose();
-            setIsRun(false);
           }, 18000);
         }
       }
     } else {
       // Break Mode
+
       if (TotalSessionMinute.current >= 5) {
         minutes.current = 5 - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 && !hasNotified) {
+        if (minutes.current <= 0  ) {
           console.log("Break completed. Resuming work session.");
-          setHasNotified(true);
           TotalSessionMinute.current -= 5;
           currentSessionMinute.current = TotalSessionMinute.current >= 30 ? 30 : TotalSessionMinute.current;
+
+          setTotalSeconds(0);
+          sessionBreakPoint.current[1] += 1;
+          setBreak(false);
+
           onClose();
           playAudio();
-          notificationTimeout1.current = setTimeout(playAudio, 9000);
-          notificationTimeout2.current = setTimeout(() => {
+          setTimeout(playAudio, 9000);
+          setTimeout(() => {
             onClose();
-            setTotalSeconds(0);
-            setHasNotified(false);
-            sessionBreakPoint.current[1] += 1;
-            setBreak(false);
           }, 18000);
         }
       } else {
         // Final break if available minutes less than 5
         minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 && !hasNotified) {
+        if (minutes.current <= 0 ) {
           console.log("Final break completed.");
-          setHasNotified(true);
           TotalSessionMinute.current = 0;
+          
+          setIsRun(false);
+          setTotalSeconds(0);
+
           onClose();
           playAudio();
-          notificationTimeout1.current = setTimeout(playAudio, 9000);
-          notificationTimeout2.current = setTimeout(() => {
+          setTimeout(playAudio, 9000);
+          setTimeout(() => {
             onClose();
-            setIsRun(false);
           }, 18000);
+
         }
       }
     }
 
-    // Cleanup function for notification timeouts
-    return () => {
-      if (notificationTimeout1.current) clearTimeout(notificationTimeout1.current);
-      if (notificationTimeout2.current) clearTimeout(notificationTimeout2.current);
-    };
-  }, [totalSeconds, isBreak, onClose, hasNotified]);
+    
+   
+  }, [totalSeconds, isBreak,  isRun]);
 
   function clickHandler() {
     // Reset relevant states for new session start
     setTotalSeconds(0);
     setIsPause(false);
-    setHasNotified(false);
     setIsRun((prev) => !prev);
   }
 
@@ -180,7 +169,7 @@ export default function App() {
     <>
       <ThemeToggle />
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-center w-full h-full md:p-10">
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4  justify-center w-full h-full md:p-10  items-stretch">
         {isRun ? (
           <TimeStarter
             isPause={isPause}

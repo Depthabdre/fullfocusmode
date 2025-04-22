@@ -23,7 +23,7 @@ function CircularTicker({ children, activeColors }) {
   return (
     <div
       ref={parentRef}
-      className="relative aspect-square flex flex-col justify-center items-center shadow-md bg-gray-200 dark:bg-gray-900 rounded-full h-3/4 md:h-3/5 lg:h-3/4"
+      className="relative aspect-square flex flex-col justify-center items-center shadow-lg bg-gray-200 dark:bg-gray-800 rounded-full border h-3/4 md:h-3/5 lg:h-3/4"
     >
       {Array.from({ length: 24 }).map((_, i) => (
         <div

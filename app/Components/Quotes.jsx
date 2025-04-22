@@ -45,7 +45,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
   return (
     <div
       className={clsx(
-        "flex flex-col place-items-center justify-center gap-6 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-xl w-full p-6",
+        "flex flex-col place-items-center justify-center gap-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg  p-8",
         isRun ? "h-[40vh] md:h-[60vh]" : "h-full"
       )}
     >
@@ -69,7 +69,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
         ""
       )}
       <div className="w-full flex justify-center items-center text-center text-gray-900 dark:text-gray-100 font-sans">
-        <p className="text-gray-900 dark:text-white font-bold text-lg md:text-xl">
+        <p className="font-bold text-2xl md:text-3xl text-center text-gray-900 dark:text-white">
           {displayedQuote}
           <span className="animate-pulse">|</span>
         </p>

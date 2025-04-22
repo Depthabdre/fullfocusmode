@@ -30,7 +30,7 @@ function TimeStarter({
   const seconds = 60 - (totalSeconds % 60);
 
   return (
-    <section className="relative flex flex-col justify-center place-items-center bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 rounded-lg h-[60vh] w-full">
+    <section className="relative flex flex-col justify-center place-items-center bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 rounded-lg shadow-lg h-[60vh] w-full">
       {isPause ? (
         <p className="absolute top-0 left-0 text-lg font-semibold px-4 py-2 rounded-lg text-gray-900 dark:text-white">
           Break {sessionBreakPoint.current[1]} of{" "}
