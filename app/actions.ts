@@ -1,11 +1,7 @@
 'use server';
-import sql from '@/lib/drizzle';
 import { z } from 'zod';
-import createUsersTable from '@/lib/table';
-import { authClient } from '@/lib/auth-client';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { a } from 'framer-motion/client';
 import { console } from 'inspector';
 
 const userSchema = z.object({
@@ -50,22 +46,23 @@ console.log("SignUp user:", { name, email, password });
 
 export async function signIn(formData: FormData) {
 
-  const SignInuserSchema = z.object({
+  const SignInUserSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(8)
+    password: z.string().min(8),
   });
 
   const email = formData.get("email") as string | null;
   const password = formData.get("password") as string | null;
-  const result = userSchema.safeParse({  email, password });
+
+  if (!email || !password) {
+    throw new Error("All fields are required");
+  }
+
+  const result = SignInUserSchema.safeParse({ email, password });
 
   if (!result.success) {
     console.error(result.error);
     throw new Error("Invalid form data");
-  }
-
-  if (!email || !password) {
-    throw new Error("All fields are required");
   }
 
   try {
@@ -75,7 +72,7 @@ export async function signIn(formData: FormData) {
         password: password,
       },
     });
-    redirect("@/app");
+    redirect("./");
   } catch (err) {
     console.error("Error in SignIn user:", err);
     throw err;

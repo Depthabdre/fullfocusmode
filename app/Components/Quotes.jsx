@@ -20,12 +20,13 @@ function Quotes({ quotes, setQuotes, isRun }) {
     let index = 0;
     const interval = setInterval(() => {
       if (index < currentQuote.length) {
-        setDisplayedQuote((prev) => prev + currentQuote[index]);
+        setDisplayedQuote((prev) => currentQuote.slice(0,index));
         index++;
       } else {
         clearInterval(interval);
       }
-    }, 50);
+    }, 150);
+    // setTimeout()
 
     return () => clearInterval(interval);
   }, [currentQuote]);
@@ -68,7 +69,10 @@ function Quotes({ quotes, setQuotes, isRun }) {
         ""
       )}
       <div className="w-full flex justify-center items-center text-center text-gray-900 dark:text-gray-100 font-sans">
-        <p className="text-gray-900 dark:text-white font-bold text-lg">{displayedQuote}</p>
+        <p className="text-gray-900 dark:text-white font-bold text-lg md:text-xl">
+          {displayedQuote}
+          <span className="animate-pulse">|</span>
+        </p>
       </div>
     </div>
   );

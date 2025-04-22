@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { signIn } from "../actions"
 export default function  LoginForm({ 
   className, 
   setIsLogin, 
@@ -27,13 +28,14 @@ export default function  LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form action = {signIn}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
+                  name = "email"
                   placeholder="m@example.com"
                   required
                 />
@@ -48,7 +50,7 @@ export default function  LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" name = "password" required />
               </div>
               <Button type="submit" className="w-full">
                 Login
