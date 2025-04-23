@@ -77,7 +77,9 @@ export async function signIn(formData: FormData) {
     console.error("Error in SignIn user:", err);
     throw err;
   }
+}
 
-
+export async function focusDurationSaver(data:{focusDuration:number}){
+  
 
 }
