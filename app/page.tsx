@@ -159,6 +159,7 @@ export default function App() {
   function clickHandler() {
     // Reset relevant states for new session start
     if (isRun){
+      console.log("Session Finished");
       focusDurationSender();
     }
     setTotalSeconds(0);
@@ -166,12 +167,17 @@ export default function App() {
     setIsRun((prev) => !prev);
   }
   async function focusDurationSender(){
-    const result = await focusDurationSaver({focusDuration:Number(ActualFocusDuration.current)})
+    console.log("Focus Duration Sender called");
+    const result = await focusDurationSaver({focusDuration:Number(ActualFocusDuration.current) , mode:mode});
+    alert(result);
+    ActualFocusDuration.current = 0;
+    
 
   }
   function pauseHandler() {
     setIsPause((prevPause) => !prevPause);
   }
+  
 
   return (
     <>

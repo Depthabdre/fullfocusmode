@@ -25,7 +25,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
       } else {
         clearInterval(interval);
       }
-    }, 150);
+    }, 50);
     // setTimeout()
 
     return () => clearInterval(interval);
@@ -69,7 +69,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
         ""
       )}
       <div className="w-full flex justify-center items-center text-center text-gray-900 dark:text-gray-100 font-sans">
-        <p className="font-bold text-2xl md:text-3xl text-center text-gray-900 dark:text-white">
+        <p className="font-bold text-lg md:text-xl text-center text-gray-900 dark:text-white">
           {displayedQuote}
           <span className="animate-pulse">|</span>
         </p>

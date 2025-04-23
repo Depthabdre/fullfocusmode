@@ -3,6 +3,9 @@ import { z } from 'zod';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { console } from 'inspector';
+import { headers } from "next/headers";
+import { db } from "@/lib/drizzle";
+import { focusSessions } from "@/lib/schema";
 
 const userSchema = z.object({
   name: z.string(),
@@ -79,7 +82,49 @@ export async function signIn(formData: FormData) {
   }
 }
 
-export async function focusDurationSaver(data:{focusDuration:number}){
-  
+export async function focusDurationSaver(data: { focusDuration: number; mode: string }) {
+  console.log("focusDurationSaver called with data:", data);
 
+  const session = await auth.api.getSession({
+      headers: await headers(),
+  });
+  console.log("Session retrieved:", session);
+
+  const focusSchema = z.object({
+      focusDuration: z.number().min(0),
+      userId: z.string(),
+      mode: z.string(),
+  });
+  if (!session || !session.user) {
+    throw new Error("User session not found");
+  }
+
+  const userId = session.user.id;
+
+  const focusData = focusSchema.safeParse({
+    focusDuration: data.focusDuration,
+    userId: userId,
+    mode: data.mode,
+  });
+
+  if (!focusData.success) {
+    console.error(focusData.error);
+    throw new Error("Invalid focus data");
+  }
+
+  try {
+    await db.insert(focusSessions).values({
+      id: crypto.randomUUID(),
+      userId: userId,
+      sessionDate: new Date(),
+      durationMinutes: new Date(data.focusDuration * 1000), // Convert seconds to milliseconds and create a Date object
+      mode: data.mode,
+    });
+    console.log("Focus session saved successfully");
+    return "Focus session saved successfully";
+  } catch (err) {
+    console.error("Error saving focus session:", err);
+    throw err;
+  }
+  
 }
