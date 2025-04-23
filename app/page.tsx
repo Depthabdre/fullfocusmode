@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker, FocusSession } from "./Components";
 import prequotes from "./Quote";
 import './globals.css';
+import {focusDurationSaver} from "./actions";
 
 
 
@@ -16,7 +17,7 @@ export default function App() {
   const [isVisible, setIsVisible] = useState(false);
 
   const intervalId = useRef<NodeJS.Timeout | null>(null);
-
+  const ActualFocusDuration =  useRef(0);
   const TotalSessionMinute = useRef(30);
   const currentSessionMinute = useRef(30);
   // sessionBreakPoint[0] = session breaks count; sessionBreakPoint[1] = work session count
@@ -69,7 +70,7 @@ export default function App() {
 
   // Main effect checking for session/break boundaries
   useEffect(() => {
-    
+    ActualFocusDuration.current += 1;   // look i want to track how many minutes user focuses before changes to non focus mode
     // Check current mode and calculate remaining minutes
     if (!isBreak) {
       // Work Session Mode
@@ -96,6 +97,7 @@ export default function App() {
         minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
         if (minutes.current <= 0 ) {
           console.log("Final work session completed.");
+          focusDurationSender();
           setIsRun(false);
           setTotalSeconds(0);
           TotalSessionMinute.current = 0;
@@ -135,7 +137,7 @@ export default function App() {
         if (minutes.current <= 0 ) {
           console.log("Final break completed.");
           TotalSessionMinute.current = 0;
-          
+          focusDurationSender();
           setIsRun(false);
           setTotalSeconds(0);
 
@@ -156,11 +158,17 @@ export default function App() {
 
   function clickHandler() {
     // Reset relevant states for new session start
+    if (isRun){
+      focusDurationSender();
+    }
     setTotalSeconds(0);
     setIsPause(false);
     setIsRun((prev) => !prev);
   }
+  async function focusDurationSender(){
+    const result = await focusDurationSaver({focusDuration:Number(ActualFocusDuration.current)})
 
+  }
   function pauseHandler() {
     setIsPause((prevPause) => !prevPause);
   }

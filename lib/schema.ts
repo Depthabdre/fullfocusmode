@@ -49,4 +49,12 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("created_at"),
   updatedAt: timestamp("updated_at"),
 });
-export const schema = {user, session, account, verification};
+
+export const focusSessions = pgTable("focus_sessions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id") .notNull().references(() => user.id, { onDelete: "cascade" }),
+  sessionDate: timestamp("session_date").notNull(),
+  durationMinutes: timestamp("duration_minutes").notNull(),
+  mode: text("mode").notNull(),
+});
+export const schema = {user, session, account, verification , focusSessions};

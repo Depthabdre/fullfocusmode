@@ -15,6 +15,7 @@ function TimeStarter({
   currentSessionMinute,
   sessionBreakPoint,
   TotalSessionMinute,
+ 
 }) {
   const [activeColors, setActiveColors] = useState(Array(24).fill(false));
 
