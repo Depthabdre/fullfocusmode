@@ -6,6 +6,8 @@ import { console } from 'inspector';
 import { headers } from "next/headers";
 import { db } from "@/lib/drizzle";
 import { focusSessions } from "@/lib/schema";
+import { eq, ne, gt, lt, gte, lte, and, or } from "drizzle-orm";
+
 
 const userSchema = z.object({
   name: z.string(),
@@ -127,4 +129,15 @@ export async function focusDurationSaver(data: { focusDuration: number; mode: st
     throw err;
   }
   
+}
+
+export async function previousProgressFetcher(){
+  const sessions = await auth.api.getSession({
+      headers: await headers(),
+  })
+  if (!sessions)
+    return []
+  const userId = sessions.user.id;
+  const result = await db.select().from(focusSessions).where(eq(focusSessions.userId , userId))
+  return result
 }
