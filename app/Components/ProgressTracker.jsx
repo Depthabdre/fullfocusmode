@@ -5,14 +5,10 @@ function ProgressTracker() {
 
   return (
     <>
-      
-        <h1 className="p-2 text-lg font-bold text-gray-600 dark:text-gray-300 ">
-          Progress Tracker
-        </h1>
-        <section className="flex gap-4 overflow-x-scroll p-2">
-          <MonthTable months={months}  />
-        </section>
-     
+
+        <MonthTable months={months}  />
+       
+       
     </>
   );
 }
