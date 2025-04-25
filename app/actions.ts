@@ -137,7 +137,12 @@ export async function previousProgressFetcher(){
   })
   if (!sessions)
     return []
+  try{
   const userId = sessions.user.id;
   const result = await db.select().from(focusSessions).where(eq(focusSessions.userId , userId))
-  return result
+  return result}
+  catch(err){
+    console.error("Error saving focus session:", err);
+    throw err;
+  }
 }
