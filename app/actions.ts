@@ -163,6 +163,12 @@ const formattedResult: { [key: string]: [number, number] } = {};
 // Loop through the result array
 for (let i = 0; i < result.length; i++) {
   let tempKeyDate = result[i].sessionDate.split('-'); // Split the sessionDate into [YYYY, MM, DD]
+  if (tempKeyDate[1][0] == '0' ){
+    tempKeyDate[1] = tempKeyDate[1].slice(1,2);
+  }
+  if (tempKeyDate[2][0] == '0' ){
+    tempKeyDate[2] = tempKeyDate[2].slice(1,2);
+  }
   let keyDate = tempKeyDate[1] + '-' +  tempKeyDate[2]; // Combine MM and DD to form MMDD format
 
   // Store the totalDuration and modeCount as an array in the formattedResult

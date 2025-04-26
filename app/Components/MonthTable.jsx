@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 export default  function MonthTable({ months }) {
 
@@ -28,11 +29,27 @@ export default  function MonthTable({ months }) {
     const result = [];
     for (let month = 0; month < months.length; month++) {
       for (let day = 0; day < months[month][1]; day++) {
+        let possiblekey = String(month + 1) + '-' +  String(day + 1);
+        let isActive = false;
+        if (possiblekey in resultdb){
+          isActive = true;
+        }
         result.push(
           <button
             key={`${month + 1}-${day + 1}`}
-            className="relative w-4 h-4 bg-gray-300 dark:bg-gray-900 cursor-pointer"
-          />
+            className={clsx(
+              "relative w-4 h-4 cursor-pointer group", // 🧠 Add 'group' to button
+              isActive ? "bg-green-400" : "bg-gray-300 dark:bg-gray-900"
+            )}
+          >
+          {isActive && (
+            <span className="z-50 absolute top-[-35px] right-[-50px] hidden group-hover:flex text-sm bg-gray-700 text-white rounded-sm px-2 py-1 whitespace-nowrap">
+            {resultdb[possiblekey][1]} focus sessions for {parseInt(resultdb[possiblekey][0] / 60)} minutes
+            </span>)}
+
+          </button>
+
+
         );
       }
     }
@@ -43,7 +60,7 @@ export default  function MonthTable({ months }) {
   return (
     <>
     
-      <section className="mb-8 mt-4 rounded-lg shadow-md p-4 border w-fit max-w-full">
+      <section className="mb-8 mt-4 rounded-lg shadow-md p-4 border dark:border-gray-800 w-fit max-w-full mx-auto">
         <div className="overflow-x-auto my-scroll">
           <div className="flex flex-row justify-start gap-16 pl-10 w-fit">
             {[
@@ -65,10 +82,15 @@ export default  function MonthTable({ months }) {
                 <span key={day}>{day}</span>
               ))}
             </div>
+            {
+    !loading 
+    ? <div className="grid grid-flow-col grid-rows-7 gap-0.5 w-fit">{buttonrender()}</div> 
+    : <div className="text-xl font-bold mx-auto">IS Loading......</div>
+}
 
-            <div className="grid grid-flow-col grid-rows-7 gap-0.5 w-fit">
-              {buttonrender()}
-            </div>
+            
+             
+           
           </div>
         </div>
       </section>
