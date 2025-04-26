@@ -21,40 +21,7 @@ export default  function MonthTable({ months }) {
 
     fetchData();
   }, []);
-
-
-  
-  function tableRender() {
-    const result2 = [];
-    const header = Object.keys(resultdb[0]);
-
-    // HEADER
-    result2.push(
-      <section key="header" className="flex flex-row justify-between">
-        {header.map((key) => (
-          <div key={key} className="font-bold">
-            {key}
-          </div>
-        ))}
-      </section>
-    );
-
-    // ROWS
-    for (let i = 0; i < resultdb.length; i++) {
-      const rows = Object.values(resultdb[i]);
-      result2.push(
-        <section key={i} className="flex flex-row justify-between">
-          {rows.map((value, idx) => (
-            <div key={idx} className="font-bold">
-              {value}
-            </div>
-          ))}
-        </section>
-      );
-    }
-
-    return result2;
-  }
+    
 
   function buttonrender() {
     const result = [];
@@ -71,16 +38,9 @@ export default  function MonthTable({ months }) {
     return result;
   }
 
-  if (loading) return <p>Loading from DB...</p>;
 
   return (
     <>
-      {resultdb.length ? (
-        tableRender()
-      ) : (
-        <div className="text-6xl">NO data Appears</div>
-      )}
-
       <section className="mb-8 mt-4 rounded-lg shadow-md p-4 border w-fit max-w-full">
         <div className="overflow-x-auto my-scroll">
           <div className="flex flex-row justify-start gap-16 pl-10 w-fit">

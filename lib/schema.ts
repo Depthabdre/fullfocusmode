@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean , integer, varchar } from "drizzle-orm/pg-core";
+
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -52,9 +53,9 @@ export const verification = pgTable("verification", {
 
 export const focusSessions = pgTable("focus_sessions", {
   id: text("id").primaryKey(),
-  userId: text("user_id") .notNull().references(() => user.id, { onDelete: "cascade" }),
-  sessionDate: timestamp("session_date").notNull(),
-  durationMinutes: timestamp("duration_minutes").notNull(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  sessionDate: varchar("session_date", { length: 10 }).notNull(), // Storing date as a string in 'YYYY-MM-DD' format
+  durationMinutes: varchar("duration_minutes" , { length: 10 }).notNull(),
   mode: text("mode").notNull(),
 });
 export const schema = {user, session, account, verification , focusSessions};

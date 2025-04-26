@@ -6,7 +6,7 @@ import { console } from 'inspector';
 import { headers } from "next/headers";
 import { db } from "@/lib/drizzle";
 import { focusSessions } from "@/lib/schema";
-import { eq, ne, gt, lt, gte, lte, and, or } from "drizzle-orm";
+import { eq, ne, gt, lt, gte, lte, and, or ,sql  } from "drizzle-orm";
 
 
 const userSchema = z.object({
@@ -118,8 +118,8 @@ export async function focusDurationSaver(data: { focusDuration: number; mode: st
     await db.insert(focusSessions).values({
       id: crypto.randomUUID(),
       userId: userId,
-      sessionDate: new Date(),
-      durationMinutes: new Date(data.focusDuration * 1000), // Convert seconds to milliseconds and create a Date object
+      sessionDate: new Date().toISOString().split("T")[0], // Get current date in 'YYYY-MM-DD' format
+      durationMinutes: String(data.focusDuration), // Convert seconds to milliseconds and create a Date object
       mode: data.mode,
     });
     console.log("Focus session saved successfully");
@@ -139,7 +139,15 @@ export async function previousProgressFetcher(){
     return []
   try{
   const userId = sessions.user.id;
-  const result = await db.select().from(focusSessions).where(eq(focusSessions.userId , userId))
+  const result = await db.select({
+        sessionDate: focusSessions.sessionDate,
+        totalDuration: sql`SUM(CAST(${focusSessions.durationMinutes} AS INTEGER))`.as("total_duration"),
+        modeCount: sql`COUNT(DISTINCT ${focusSessions.mode})`.as("mode_count"),
+        })
+        .from(focusSessions)
+        .where(eq(focusSessions.userId, userId))
+        .groupBy(focusSessions.sessionDate);
+
   return result}
   catch(err){
     console.error("Error saving focus session:", err);
