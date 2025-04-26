@@ -150,8 +150,8 @@ interface Result {
 // Fetch the data from the database
 const result: Result[] = await db.select({
   sessionDate: focusSessions.sessionDate,
-  totalDuration: sql`SUM(CAST(${focusSessions.durationMinutes} AS INTEGER))`.as("total_duration"),
-  modeCount: sql`COUNT(DISTINCT ${focusSessions.mode})`.as("mode_count"),
+  totalDuration: sql<number>`SUM(CAST(${focusSessions.durationMinutes} AS INTEGER))`.as("total_duration"),
+  modeCount: sql<number>`COUNT(DISTINCT ${focusSessions.mode})`.as("mode_count"),
 })
 .from(focusSessions)
 .where(eq(focusSessions.userId, userId))
