@@ -139,16 +139,38 @@ export async function previousProgressFetcher(){
     return []
   try{
   const userId = sessions.user.id;
-  const result = await db.select({
-        sessionDate: focusSessions.sessionDate,
-        totalDuration: sql`SUM(CAST(${focusSessions.durationMinutes} AS INTEGER))`.as("total_duration"),
-        modeCount: sql`COUNT(DISTINCT ${focusSessions.mode})`.as("mode_count"),
-        })
-        .from(focusSessions)
-        .where(eq(focusSessions.userId, userId))
-        .groupBy(focusSessions.sessionDate);
 
-  return result}
+  // Define the interface for the result
+interface Result {
+  sessionDate: string;
+  totalDuration: number;
+  modeCount: number;
+}
+
+// Fetch the data from the database
+const result: Result[] = await db.select({
+  sessionDate: focusSessions.sessionDate,
+  totalDuration: sql`SUM(CAST(${focusSessions.durationMinutes} AS INTEGER))`.as("total_duration"),
+  modeCount: sql`COUNT(DISTINCT ${focusSessions.mode})`.as("mode_count"),
+})
+.from(focusSessions)
+.where(eq(focusSessions.userId, userId))
+.groupBy(focusSessions.sessionDate);
+
+// Initialize the formattedResult object to store results by date (MMDD format)
+const formattedResult: { [key: string]: [number, number] } = {};
+
+// Loop through the result array
+for (let i = 0; i < result.length; i++) {
+  let tempKeyDate = result[i].sessionDate.split('-'); // Split the sessionDate into [YYYY, MM, DD]
+  let keyDate = tempKeyDate[1] + '-' +  tempKeyDate[2]; // Combine MM and DD to form MMDD format
+
+  // Store the totalDuration and modeCount as an array in the formattedResult
+  formattedResult[keyDate] = [result[i].totalDuration, result[i].modeCount];
+}
+
+
+  return formattedResult}
   catch(err){
     console.error("Error saving focus session:", err);
     throw err;

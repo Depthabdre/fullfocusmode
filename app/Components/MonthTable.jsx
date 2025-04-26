@@ -12,6 +12,7 @@ export default  function MonthTable({ months }) {
         const res = await fetch('../api/progressFetcher'); // This hits route.ts
         const data = await res.json();
         setUsers(data);
+        console.log("The fetched Data is " , {data});
       } catch (err) {
         console.error('Failed to fetch users:', err);
       } finally {
@@ -41,6 +42,7 @@ export default  function MonthTable({ months }) {
 
   return (
     <>
+    
       <section className="mb-8 mt-4 rounded-lg shadow-md p-4 border w-fit max-w-full">
         <div className="overflow-x-auto my-scroll">
           <div className="flex flex-row justify-start gap-16 pl-10 w-fit">
