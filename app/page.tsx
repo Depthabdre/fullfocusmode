@@ -4,6 +4,7 @@ import { Quotes, ThemeToggle, Mode, TimeStarter, Notification, ProgressTracker, 
 import prequotes from "./Quote";
 import './globals.css';
 import {focusDurationSaver} from "./actions";
+import  Profile  from "./Components/Profile";
 
 
 
@@ -182,6 +183,7 @@ export default function App() {
   return (
     <>
       <ThemeToggle />
+      <Profile />
       <Mode isPause={isPause} mode={mode} setMode={setMode} />
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4  justify-center md:max-w-4xl max-w-md mx-auto h-full    items-stretch">
         {isRun ? (

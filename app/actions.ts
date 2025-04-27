@@ -84,6 +84,38 @@ export async function signIn(formData: FormData) {
   }
 }
 
+// export async function signInSocial() {
+//   try {
+//     await auth.api.signInSocial({
+//       body: {
+//         provider: "google",
+//         idToken: {
+//         token: // Google ID Token,
+//         accessToken: // Google Access Token
+//     },
+//   }
+//     });
+//     redirect("./");
+//   } catch (err) {
+//     console.error("Error in SignIn social:", err);
+//     throw err;
+//   }
+// }
+
+export async function signOut() {
+  try {
+    await auth.api.signOut({
+      headers: await headers(),
+    });
+    redirect("./login");
+  }
+  catch (err) {
+    console.error("Error in SignOut user:", err);
+    throw err;
+  }
+}
+
+
 export async function focusDurationSaver(data: { focusDuration: number; mode: string }) {
   console.log("focusDurationSaver called with data:", data);
 
