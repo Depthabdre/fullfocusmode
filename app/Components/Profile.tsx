@@ -1,10 +1,33 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button"; // if you use shadcn
 import { signOut } from "../actions"; // your signOut function
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
+  const [userName , setUserName] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(()=>{
+
+    async function fetchName(){
+      try{
+      const res = await fetch("../api/UserDataFetcher");
+      const result = await res.json();
+      console.log("The fetched Data is " , {result});
+      setUserName(result[0].name);
+      }
+      catch(err){
+        console.error('Failed to fetch users:', err);
+      }
+      finally{
+        setLoading(false);
+      }
+
+    }
+    fetchName();
+
+  } , [])
 
   return (
     <div className="fixed top-2 left-2">
@@ -15,8 +38,8 @@ export default function Profile() {
             onClick={() => setOpen(!open)}
           />
           {open && (
-            <div className="text-md font-semibold text-gray-800 dark:text-gray-100">
-              username
+            <div className="text-md font-semibold text-gray-800 dark:text-gray-100 whitespace-nowrap">
+             {userName ? userName : 'Loading'}
             </div>
           )}
         </div>

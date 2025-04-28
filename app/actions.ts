@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { console } from 'inspector';
 import { headers } from "next/headers";
 import { db } from "@/lib/drizzle";
-import { focusSessions } from "@/lib/schema";
+import { focusSessions , user } from "@/lib/schema";
 import { eq, ne, gt, lt, gte, lte, and, or ,sql  } from "drizzle-orm";
 
 
@@ -209,6 +209,25 @@ for (let i = 0; i < result.length; i++) {
 
 
   return formattedResult}
+  catch(err){
+    console.error("Error saving focus session:", err);
+    throw err;
+  }
+}
+
+export async function userDataFetcher(){
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  })
+  if (!session){
+    return []
+  }
+  try{
+  const userId = session.user.id;
+  const result = await db.select({name: user.name}).from(user).where(eq(user.id , userId))
+
+  return result
+  }
   catch(err){
     console.error("Error saving focus session:", err);
     throw err;
