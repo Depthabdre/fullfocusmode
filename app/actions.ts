@@ -84,23 +84,21 @@ export async function signIn(formData: FormData) {
   }
 }
 
-// export async function signInSocial() {
-//   try {
-//     await auth.api.signInSocial({
-//       body: {
-//         provider: "google",
-//         idToken: {
-//         token: // Google ID Token,
-//         accessToken: // Google Access Token
-//     },
-//   }
-//     });
-//     redirect("./");
-//   } catch (err) {
-//     console.error("Error in SignIn social:", err);
-//     throw err;
-//   }
-// }
+export async function signInSocial() {
+  try {
+    await auth.api.signInSocial({
+      body: {
+        provider: "google",
+        }
+    });
+
+    redirect("./");
+    
+  } catch (err) {
+    console.error("Error in SignIn social:", err);
+    throw err;
+  }
+}
 
 export async function signOut() {
   try {
