@@ -55,10 +55,8 @@ export default function  LoginForm({
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" className="w-full"onClick={(e) => {
-                  e.preventDefault();
-                  signInSocial();
-                }}>
+              <Button variant="outline" className="w-full" onClick={signInSocial
+                }>
                 Login with Google
               </Button>
             </div>

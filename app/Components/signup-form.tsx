@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {signUp } from "../actions";
+import {signUp , signInSocial  } from "../actions";
 
 export default function SignUpForm({
   className,
@@ -58,7 +58,7 @@ export default function SignUpForm({
               <Button type="submit" className="w-full">
                 Sign Up
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={signInSocial}>
                 Sign up with Google
               </Button>
             </div>

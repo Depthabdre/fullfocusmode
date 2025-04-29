@@ -89,9 +89,12 @@ export async function signInSocial() {
     await auth.api.signInSocial({
       body: {
         provider: "google",
-        }
+        callbackURL: redirect("./"),
+        errorCallbackURL: "/error",
+        disableRedirect: true,
+        },
     });
-
+    console.log("Yeahhhh");
     redirect("./");
     
   } catch (err) {
