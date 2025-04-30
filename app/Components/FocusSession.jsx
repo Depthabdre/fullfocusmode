@@ -70,13 +70,13 @@ function FocusSession({ TotalSessionMinute, setIsRun, mode, currentSessionMinute
         </div>
       </div>
       <div>
-        <p className="text-emerald-900 dark:text-emerald-50 font-semibold">
+        <p className="text-gray-500 dark:text-gray-300 font-semibold">
           You will have {breaks} breaks
         </p>
       </div>
-      <div className="bg-blue-300 dark:bg-blue-700 rounded-md p-2 text-blue-900 dark:text-blue-50 font-bold hover:scale-110 transition-transform duration-500 ease-linear">
-        <button className="inline-flex gap-2" onClick={FocusSessionStarter}>
-          <Play className="cursor-pointer hover:scale-110 transition-transform" />
+      <div className=" bg-blue-600 dark:bg-blue-700 rounded-md p-2 text-blue-50 font-bold  hover:bg-blue-700 dark:hover:bg-blue-500 transition-transform duration-500 ease-linear ">
+        <button className="cursor-pointer inline-flex gap-2" onClick={FocusSessionStarter}>
+          <Play className=" transition-transform" />
           Start Focus Session
         </button>
       </div>

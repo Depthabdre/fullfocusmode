@@ -86,16 +86,15 @@ export async function signIn(formData: FormData) {
 
 export async function signInSocial() {
   try {
-    await auth.api.signInSocial({
+    const { url } = await auth.api.signInSocial({
       body: {
         provider: "google",
-        callbackURL: redirect("./"),
-        errorCallbackURL: "/error",
-        disableRedirect: true,
         },
     });
-    console.log("Yeahhhh");
-    redirect("./");
+    if (!url) {
+      throw new Error("URL is undefined");
+    }
+    return redirect(url);
     
   } catch (err) {
     console.error("Error in SignIn social:", err);
