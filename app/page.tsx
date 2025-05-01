@@ -170,7 +170,11 @@ export default function App() {
   async function focusDurationSender(){
     console.log("Focus Duration Sender called");
     const result = await focusDurationSaver({focusDuration:Number(ActualFocusDuration.current) , mode:mode});
-    alert(result);
+    if (result.success) {
+      alert("✅ Focus session saved successfully!");
+    } else {
+      alert("❌ Error: " + result.error);
+    }
     ActualFocusDuration.current = 0;
     
 

@@ -15,20 +15,20 @@ const userSchema = z.object({
   password: z.string().min(8)
 });
 
-export async function signUp(formData: FormData) {
+export async function signUp(prevstate:{ message: string } , formData: FormData): Promise<{ message: string }> {
   
   const name = formData.get("name") as string | null;
   const email = formData.get("email") as string | null;
   const password = formData.get("password") as string | null;
 
   if (!email || !name || !password) {
-    throw new Error("All fields are required");
+    return {message:"All fields are required"};
   }
 
   const result = userSchema.safeParse({ name, email, password });
   if (!result.success) {
     console.error(result.error);
-    throw new Error("Invalid form data");
+    return {message:"Invalid form data"};
   }
 console.log("SignUp user:", { name, email, password });
   try {
@@ -43,13 +43,13 @@ console.log("SignUp user:", { name, email, password });
       redirect("./");
    
   } catch (err) {
-    console.error("Error in SignUp user:", err);
-    throw err;
+    return {message: "Error in SignUp user Try Again:"};
   }
   // console.log("SignUp user:", { name, email, password });
 }
 
-export async function signIn(formData: FormData) {
+export async function signIn( prevState: { message: string },formData: FormData):
+ Promise<{ message: string }> {
 
   const SignInUserSchema = z.object({
     email: z.string().email(),
@@ -60,14 +60,14 @@ export async function signIn(formData: FormData) {
   const password = formData.get("password") as string | null;
 
   if (!email || !password) {
-    return {error : "All fields are required"};
+    return {message: "All fields are required"};
   }
 
   const result = SignInUserSchema.safeParse({ email, password });
 
   if (!result.success) {
     console.error(result.error);
-    return {error : "Invalid form data"};
+    return {message : "Invalid form data"};
   }
 
   try {
@@ -79,8 +79,8 @@ export async function signIn(formData: FormData) {
     });
     redirect("./");
   } catch (err) {
-    console.error("Error in SignIn user:", err);
-    throw err;
+    return {message:"Sign-in error: Incorrect email or password."}
+    
   }
 }
 
@@ -130,7 +130,7 @@ export async function focusDurationSaver(data: { focusDuration: number; mode: st
       mode: z.string(),
   });
   if (!session || !session.user) {
-    throw new Error("User session not found");
+    return { success: false , error: "User session not found" };
   }
 
   const userId = session.user.id;
@@ -143,7 +143,7 @@ export async function focusDurationSaver(data: { focusDuration: number; mode: st
 
   if (!focusData.success) {
     console.error(focusData.error);
-    throw new Error("Invalid focus data");
+    return {success: false , error: "Invalid focus data"};
   }
 
   try {
@@ -155,10 +155,10 @@ export async function focusDurationSaver(data: { focusDuration: number; mode: st
       mode: data.mode,
     });
     console.log("Focus session saved successfully");
-    return "Focus session saved successfully";
+    return {success:true};
   } catch (err) {
-    console.error("Error saving focus session:", err);
-    throw err;
+    return {success: false , error: "Database error"};
+    
   }
   
 }

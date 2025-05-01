@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { useTransition } from "react";
+import { useTransition , useActionState } from "react";
 import {
   Card,
   CardContent,
@@ -11,6 +11,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signIn ,signInSocial } from "../actions"
+
+const initialState = { message: '' };
+
 export default function  LoginForm({ 
   className, 
   setIsLogin, 
@@ -18,6 +21,14 @@ export default function  LoginForm({
 }: React.ComponentPropsWithoutRef<"div"> & { 
   setIsLogin: (value: boolean) => void 
 }) {
+  // Define the State type
+  type State = {
+    message: string;
+  };
+  
+    const [stateMessage, FormAction, pending] = useActionState(signIn as (prevState: State, formData: FormData) => Promise<State>,
+    { message: '' }
+  );
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -31,7 +42,7 @@ export default function  LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action = {signIn}>
+          <form action = {FormAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -43,7 +54,7 @@ export default function  LoginForm({
                   required
                 />
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-2 ">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <a
@@ -54,8 +65,10 @@ export default function  LoginForm({
                   </a>
                 </div>
                 <Input id="password" type="password" name = "password" required />
+                {stateMessage.message && (<p className="text-sm text-red-500">{stateMessage.message}</p>)}
               </div>
-              <Button type="submit" className="w-full">
+
+              <Button disabled = {pending} type="submit" className="w-full">
                 Login
               </Button>
               <Button type = 'button' variant="outline" className="w-full" onClick = {() =>

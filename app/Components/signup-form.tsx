@@ -11,13 +11,19 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {signUp , signInSocial  } from "../actions";
-import { useTransition } from "react";
+import { useTransition , useActionState } from "react";
 
 export default function SignUpForm({
   className,
   setIsLogin,
   ...props
 }: React.ComponentPropsWithoutRef<"div"> & { setIsLogin: (value: boolean) => void }) {
+
+   type State = {
+      message: string;
+    };
+    
+  const [stateMessage, FormAction, pending] = useActionState(signUp as (prevState: State, formData: FormData) => Promise<State>,{ message: '' });
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -30,7 +36,7 @@ export default function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action = {signUp} >
+          <form action = {FormAction} >
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="name">Name</Label>
@@ -57,6 +63,7 @@ export default function SignUpForm({
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" name = "password" required />
+                {stateMessage.message && (<p className="text-sm text-red-500">{stateMessage.message}</p>)}
               </div>
               <Button type="submit" className="w-full">
                 Sign Up
