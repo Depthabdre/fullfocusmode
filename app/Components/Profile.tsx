@@ -38,7 +38,7 @@ export default function Profile() {
             onClick={() => setOpen(!open)}
           />
           {open && (
-            <div className="text-md font-semibold text-gray-800 dark:text-gray-100 whitespace-nowrap">
+            <div className="text-md font-normal text-gray-500 dark:text-gray-300 whitespace-nowrap ">
              {userName ? userName : 'Loading'}
             </div>
           )}
@@ -47,7 +47,7 @@ export default function Profile() {
       {open && (
         <Button
           onClick={signOut}
-          className="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
+          className="mt-2 text-md font-bold w-full bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
         >
           Logout
         </Button>

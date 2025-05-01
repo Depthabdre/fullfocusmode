@@ -60,14 +60,14 @@ export async function signIn(formData: FormData) {
   const password = formData.get("password") as string | null;
 
   if (!email || !password) {
-    throw new Error("All fields are required");
+    return {error : "All fields are required"};
   }
 
   const result = SignInUserSchema.safeParse({ email, password });
 
   if (!result.success) {
     console.error(result.error);
-    throw new Error("Invalid form data");
+    return {error : "Invalid form data"};
   }
 
   try {

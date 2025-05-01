@@ -60,8 +60,9 @@ export default  function MonthTable({ months }) {
   return (
     <>
     
-      <section className="mb-8 mt-4 rounded-lg shadow-md p-4 border dark:border-gray-800 w-fit max-w-full mx-auto">
-        <div className="overflow-x-auto my-scroll">
+      <section className="relative mb-8 mt-4 rounded-lg shadow-md p-4 border dark:border-gray-800 w-fit max-w-full mx-auto">
+        <p className='absolute top-0 left-2 text-lg font-medium text-gray-700 dark:text-gray-100'>consistency</p>
+        <div className="overflow-x-auto my-scroll mt-6">
           <div className="flex flex-row justify-start gap-16 pl-10 w-fit">
             {[
               "Jan", "Feb", "Mar", "Apr", "May",

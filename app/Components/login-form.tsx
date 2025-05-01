@@ -58,10 +58,13 @@ export default function  LoginForm({
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              {/* <Button variant="outline" className="w-full" onClick={signInSocial
-                }>
-                Login with Google
-              </Button> */}
+              <Button type = 'button' variant="outline" className="w-full" onClick = {() =>
+                  startTransition(() => {
+                  // Calls the server action, which responds with a 303 → OAuth provider
+                  signInSocial();})}  
+                  disabled={isPending}>
+                {isPending ? "Redirecting…" : "Login with Google"}
+              </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
@@ -80,15 +83,7 @@ export default function  LoginForm({
         </CardContent>
       </Card>
     </div>
-    <Button variant="outline" className="w-full" onClick = {() =>
-        startTransition(() => {
-          // Calls the server action, which responds with a 303 → OAuth provider
-          signInSocial();
-        })
-      }  disabled={isPending}
-    >
-       {isPending ? "Redirecting…" : "Login with Google"}
-    </Button>
+    
     </>
   );
 }
