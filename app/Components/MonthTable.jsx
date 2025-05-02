@@ -61,7 +61,7 @@ export default  function MonthTable({ months }) {
     <>
     
       <section className="relative mb-8 mt-4 rounded-lg shadow-md p-4 border dark:border-gray-800 w-fit max-w-full mx-auto">
-        <p className='absolute top-0 left-2 text-lg font-medium text-gray-700 dark:text-gray-100'>consistency</p>
+        <p className='absolute top-1 left-1 text-md text-gray-900 font-semibold dark:text-gray-100'>consistency</p>
         <div className="overflow-x-auto my-scroll mt-6">
           <div className="flex flex-row justify-start gap-16 pl-10 w-fit">
             {[
@@ -70,7 +70,7 @@ export default  function MonthTable({ months }) {
             ].map((month) => (
               <span
                 key={month}
-                className="text-gray-600 dark:text-gray-300 font-medium"
+                className="text-gray-500 dark:text-gray-400 font-medium"
               >
                 {month}
               </span>
@@ -78,7 +78,7 @@ export default  function MonthTable({ months }) {
           </div>
 
           <div className="flex flex-row gap-0.5 mt-2">
-            <div className="flex flex-col justify-between text-gray-600 font-medium dark:text-gray-300">
+            <div className="flex flex-col justify-between text-gray-500 dark:text-gray-400 font-medium">
               {["Mon", "Wed", "Sat"].map((day) => (
                 <span key={day}>{day}</span>
               ))}

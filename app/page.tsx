@@ -213,7 +213,7 @@ export default function App() {
         )}
         <Quotes quotes={quotes} setQuotes={setQuotes} isRun={isRun} />
       </section>
-      <ProgressTracker />
+      <ProgressTracker isRun={isRun}/>
       <Notification isVisible={isVisible} isBreak={isBreak} onClose={onClose} />
     </>
   );

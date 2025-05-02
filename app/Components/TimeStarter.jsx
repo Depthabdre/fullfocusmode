@@ -33,12 +33,12 @@ function TimeStarter({
   return (
     <section className="relative flex flex-col justify-center place-items-center bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 rounded-lg shadow-lg h-[60vh] w-full">
       {isPause ? (
-        <p className="absolute top-0 left-0 text-lg font-semibold px-4 py-2 rounded-lg text-gray-900 dark:text-white">
+        <p className="absolute top-2 left-2 text-md text-gray-500 font-semibold">
           Break {sessionBreakPoint.current[1]} of{" "}
           {Math.ceil(TotalSessionMinute.current / 35)}
         </p>
       ) : (
-        <p className="absolute top-0 left-0 text-lg font-semibold px-4 py-2 rounded-lg text-gray-900 dark:text-white">
+        <p className="absolute  top-2 left-2 text-md text-gray-500 font-semibold">
           Joy Session {sessionBreakPoint.current[0]} of{" "}
           {Math.ceil(TotalSessionMinute.current / 35)}
         </p>

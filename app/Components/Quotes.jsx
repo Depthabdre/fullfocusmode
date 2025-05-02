@@ -45,10 +45,13 @@ function Quotes({ quotes, setQuotes, isRun }) {
   return (
     <div
       className={clsx(
-        "flex flex-col place-items-center justify-center gap-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg  p-8",
+        "relative flex flex-col place-items-center justify-center gap-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg  p-8",
         isRun ? "h-[40vh] md:h-[60vh]" : "h-full"
       )}
     >
+      {isRun && (<p class="absolute top-2 left-2 text-md text-gray-500 font-semibold">
+        Inspirational Quote
+      </p>)}
       {!isRun ? (
         <>
           <input
