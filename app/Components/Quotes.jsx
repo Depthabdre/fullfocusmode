@@ -49,7 +49,7 @@ function Quotes({ quotes, setQuotes, isRun }) {
         isRun ? "h-[40vh] md:h-[60vh]" : "h-full"
       )}
     >
-      {isRun && (<p class="absolute top-2 left-2 text-md text-gray-500 font-semibold">
+      {isRun && (<p className="absolute top-2 left-2 text-md text-gray-500 font-semibold">
         Inspirational Quote
       </p>)}
       {!isRun ? (

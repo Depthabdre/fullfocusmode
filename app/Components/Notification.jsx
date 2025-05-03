@@ -9,7 +9,7 @@ function Notification({ isBreak, onClose, isVisible }) {
         transition: "visibility 0.3s, opacity 0.3s",
         opacity: isVisible ? 1 : 0,
       }}
-      className="fixed bottom-4 right-4 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-2xl rounded-xl p-6 w-80 text-gray-900 dark:text-white"
+      className="fixed bottom-4 right-4 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 shadow-md rounded-sm p-4 w-70 text-gray-900 dark:text-white"
     >
       <div className="flex justify-end">
         <button
@@ -20,13 +20,13 @@ function Notification({ isBreak, onClose, isVisible }) {
           &times;
         </button>
       </div>
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center ">
         {isBreak ? (
-          <p className="text-xl font-bold text-gray-900 dark:text-white">
+          <p className="text-md font-medium text-gray-900 dark:text-white">
             Break is Over, Time to Enjoy Your Session
           </p>
         ) : (
-          <p className="text-xl font-bold text-gray-900 dark:text-white">
+          <p className="text-md font-medium text-gray-900 dark:text-white">
             Enjoying Session is Over, Time for a Break
           </p>
         )}

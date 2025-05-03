@@ -44,10 +44,10 @@ export default function App() {
   };
 
   // Toggle notification visibility
-  const onClose = useCallback(() => {
+  const onClose = (() => {
     console.log("Toggling notification visibility");
-    setIsVisible((prev) => !prev);
-  }, []);
+    setIsVisible(false);
+  });
 
   // Timer interval effect
   useEffect(() => {
@@ -71,101 +71,102 @@ export default function App() {
 
   // Main effect checking for session/break boundaries
   useEffect(() => {
-    ActualFocusDuration.current += 1;   // look i want to track how many minutes user focuses before changes to non focus mode
-    // Check current mode and calculate remaining minutes
-    if (!isBreak) {
-      // Work Session Mode
-      if (TotalSessionMinute.current >= 30) {
-        minutes.current = 30 - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 ) {
-          console.log("Work session completed. Initiating break.");
-          // setHasNotified(true);
-          TotalSessionMinute.current -= 30;
-          currentSessionMinute.current = TotalSessionMinute.current >= 5 ? 5 : TotalSessionMinute.current;
+    if(isRun){
+      ActualFocusDuration.current += 1;   // look i want to track how many minutes user focuses before changes to non focus mode
+      // Check current mode and calculate remaining minutes
+      if (!isBreak) {
+        // Work Session Mode
+        if (TotalSessionMinute.current > 30) {
+          minutes.current = 30 - Math.floor(totalSeconds / 60);
+          if (minutes.current <= 0 ) {
+            console.log("Work session completed. Initiating break.");
+            // setHasNotified(true);
+            TotalSessionMinute.current -= 30;
+            currentSessionMinute.current = TotalSessionMinute.current >= 5 ? 5 : TotalSessionMinute.current;
 
-          setTotalSeconds(0);
-          sessionBreakPoint.current[0] += 1;
-          setBreak(true);
+            setTotalSeconds(0);
+            sessionBreakPoint.current[0] += 1;
+            setBreak(true);
 
-          onClose();
-          playAudio();
-          setTimeout(playAudio, 9000);
-          setTimeout(() => {
-                onClose();
-              }, 18000);
-        }
-      } else { // When TotalSessionMinute.current < 30 (final session work period)
-        minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 ) {
-          console.log("Final work session completed.");
-          focusDurationSender();
-          setIsRun(false);
-          setTotalSeconds(0);
-          TotalSessionMinute.current = 0;
+            setIsVisible(true);
+            playAudio();
+            setTimeout(playAudio, 9000);
+            setTimeout(() => {
+                  setIsVisible(false);
+                }, 18000);
+          }
+        } else { // When TotalSessionMinute.current < 30 (final session work period)
+          minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+          if (minutes.current <= 0 ) {
+            console.log("Final work session completed.");
+            focusDurationSender();
+            setIsRun(false);
+            setTotalSeconds(0);
+            TotalSessionMinute.current = 0;
 
-          onClose();
-          playAudio();
-          setTimeout(playAudio, 9000);
-          setTimeout(() => {
-            onClose();
-          }, 18000);
-        }
-      }
-    } else {
-      // Break Mode
-
-      if (TotalSessionMinute.current >= 5) {
-        minutes.current = 5 - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0  ) {
-          console.log("Break completed. Resuming work session.");
-          TotalSessionMinute.current -= 5;
-          currentSessionMinute.current = TotalSessionMinute.current >= 30 ? 30 : TotalSessionMinute.current;
-
-          setTotalSeconds(0);
-          sessionBreakPoint.current[1] += 1;
-          setBreak(false);
-
-          onClose();
-          playAudio();
-          setTimeout(playAudio, 9000);
-          setTimeout(() => {
-            onClose();
-          }, 18000);
+            setIsVisible(true);
+            playAudio();
+            setTimeout(playAudio, 9000);
+            setTimeout(() => {
+              setIsVisible(false);
+            }, 18000);
+          }
         }
       } else {
-        // Final break if available minutes less than 5
-        minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
-        if (minutes.current <= 0 ) {
-          console.log("Final break completed.");
-          TotalSessionMinute.current = 0;
-          focusDurationSender();
-          setIsRun(false);
-          setTotalSeconds(0);
+        // Break Mode
 
-          onClose();
-          playAudio();
-          setTimeout(playAudio, 9000);
-          setTimeout(() => {
-            onClose();
-          }, 18000);
+        if (TotalSessionMinute.current > 5) {
+          minutes.current = 5 - Math.floor(totalSeconds / 60);
+          if (minutes.current <= 0  ) {
+            console.log("Break completed. Resuming work session.");
+            TotalSessionMinute.current -= 5;
+            currentSessionMinute.current = TotalSessionMinute.current >= 30 ? 30 : TotalSessionMinute.current;
 
+            setTotalSeconds(0);
+            sessionBreakPoint.current[1] += 1;
+            setBreak(false);
+
+            setIsVisible(true);
+            playAudio();
+            setTimeout(playAudio, 9000);
+            setTimeout(() => {
+              setIsVisible(false);
+            }, 18000);
+          }
+        } else {
+          // Final break if available minutes less than 5
+          minutes.current = TotalSessionMinute.current - Math.floor(totalSeconds / 60);
+          if (minutes.current <= 0 ) {
+            console.log("Final break completed.");
+            TotalSessionMinute.current = 0;
+            focusDurationSender();
+            setIsRun(false);
+            setTotalSeconds(0);
+
+            setIsVisible(true);
+            playAudio();
+            setTimeout(playAudio, 9000);
+            setTimeout(() => {
+              setIsVisible(false);
+            }, 18000);
+
+          }
         }
-      }
-    }
+      }}
 
     
    
   }, [totalSeconds, isBreak,  isRun]);
 
   function clickHandler() {
-    // Reset relevant states for new session start
+    // Reset relevant states for stoping the session
     if (isRun){
       console.log("Session Finished");
       focusDurationSender();
     }
     setTotalSeconds(0);
     setIsPause(false);
-    setIsRun((prev) => !prev);
+    setIsRun(false);
   }
   async function focusDurationSender(){
     console.log("Focus Duration Sender called");
