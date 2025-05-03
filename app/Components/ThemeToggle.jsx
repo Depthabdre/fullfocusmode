@@ -9,9 +9,9 @@ export default function ThemeToggle() {
   // Initialize darkMode state based on localStorage or system preference
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    if (storedTheme === "dark" || (!storedTheme && systemPrefersDark)) {
+    // const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    // || (!storedTheme && systemPrefersDark)
+    if (storedTheme === "dark" ) {
       setDarkMode(true);
       document.documentElement.classList.add("dark");
     } else {
