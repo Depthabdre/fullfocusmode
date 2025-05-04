@@ -68,8 +68,8 @@ export default function  LoginForm({
                 {stateMessage.message && (<p className="text-sm text-red-500">{stateMessage.message}</p>)}
               </div>
 
-              <Button disabled = {pending} type="submit" className="w-full">
-                Login
+              <Button disabled = {pending} type="submit" className="w-full" >
+                  {pending ? "Signing In…" : "Sign In"}
               </Button>
               <Button type = 'button' variant="outline" className="w-full" onClick = {() =>
                   startTransition(() => {

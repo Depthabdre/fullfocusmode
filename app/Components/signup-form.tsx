@@ -25,6 +25,7 @@ export default function SignUpForm({
     
   const [stateMessage, FormAction, pending] = useActionState(signUp as (prevState: State, formData: FormData) => Promise<State>,{ message: '' });
   const [isPending, startTransition] = useTransition();
+  
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -65,8 +66,8 @@ export default function SignUpForm({
                 <Input id="password" type="password" name = "password" required />
                 {stateMessage.message && (<p className="text-sm text-red-500">{stateMessage.message}</p>)}
               </div>
-              <Button type="submit" className="w-full">
-                Sign Up
+              <Button type="submit" className="w-full" disabled={pending}>
+                  {pending ? "Signing Up…" : "Sign Up"}
               </Button>
               <Button type = 'button' variant="outline" className="w-full" onClick = {() =>
                   startTransition(() => {
