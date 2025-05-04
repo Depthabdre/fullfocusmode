@@ -20,10 +20,19 @@ function Mode({ mode, setMode, isPause }) {
           <input
             type="text"
             placeholder="Enter The Mode..."
-            value={mode} // Ensures input retains value
+            value={mode}
             onChange={onChangeHandler}
+            list="focusModes"
             className="text-gray-900 dark:text-gray-100 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-full bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-colors duration-200"
           />
+
+          <datalist id="focusModes">
+            <option value="Dead Mode" label="Dead Mode - no distractions, high-intensity" />
+            <option value="Deep Mode" label="Deep Mode - focused deep work" />
+            <option value="Easy Mode" label="Easy Mode - light, relaxed focus" />
+          </datalist>
+
+          
 
           <button
             onClick={editHandler}
