@@ -8,26 +8,29 @@ export default function Profile() {
   const [userName , setUserName] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
-
-    async function fetchName(){
-      try{
-      const res = await fetch("../api/UserDataFetcher");
-      const result = await res.json();
-      console.log("The fetched Data is " , {result});
-      setUserName(result[0].name);
-      }
-      catch(err){
-        console.error('Failed to fetch users:', err);
-      }
-      finally{
+  useEffect(() => {
+    async function fetchName() {
+      try {
+        const res = await fetch("../api/UserDataFetcher");
+        const result = await res.json();
+  
+        console.log("Fetched data:", result);
+  
+        if (Array.isArray(result) && result[0]?.name) {
+          setUserName(result[0].name);
+        } else {
+          console.error("User name not found in result:", result);
+        }
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      } finally {
         setLoading(false);
       }
-
     }
+  
     fetchName();
-
-  } , [])
+  }, []);
+  
 
   return (
     <div className="fixed top-2 left-2">

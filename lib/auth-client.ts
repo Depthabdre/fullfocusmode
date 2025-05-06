@@ -2,7 +2,7 @@
 import { createAuthClient } from 'better-auth/react';
 
 export const authClient = createAuthClient({
-    baseURL: "https://fullfocusmode.vercel.app",
+    baseURL: "https://localhost:3000",
 })
 
 // export const { signIn , signUp , useSession } = authClient;
