@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { db } from "@/lib/drizzle";
 import { focusSessions, user } from "@/lib/schema";
 import { eq, ne, gt, lt, gte, lte, and, or, sql } from "drizzle-orm";
+import { compileFunction } from 'vm';
 
 
 const userSchema = z.object({
@@ -176,6 +177,7 @@ export async function previousProgressFetcher() {
   const sessions = await auth.api.getSession({
     headers: await headers(),
   })
+  console.log("Session retrieved:", sessions);
   if (!sessions)
     return []
   try {
@@ -226,9 +228,11 @@ export async function previousProgressFetcher() {
 }
 
 export async function userDataFetcher() {
+  
   const session = await auth.api.getSession({
     headers: await headers(),
   })
+  
   if (!session) {
     return []
   }
