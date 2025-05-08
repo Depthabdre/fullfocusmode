@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
-import { previousProgressFetcher} from '@/app/actions';
+import { NextRequest, NextResponse } from 'next/server';
+import { previousProgressFetcher } from '@/app/actions';
+
 
 export async function GET() {
     const users = await previousProgressFetcher();

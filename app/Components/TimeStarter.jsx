@@ -55,18 +55,18 @@ function TimeStarter({
           <Pause
             onClick={pauseHandler}
             size={30}
-            className="cursor-pointer hover:scale-110 transition-transform text-gray-900 dark:text-white"
+            className="cursor-pointer hover:scale-110 transition-transform text-blue-600 dark:text-blue-700"
           />
         ) : (
           <Play
             onClick={pauseHandler}
             size={30}
-            className="cursor-pointer hover:scale-110 transition-transform text-gray-900 dark:text-white"
+            className="cursor-pointer hover:scale-110 transition-transform text-blue-600 dark:text-blue-700"
           />
         )}
         <button
           onClick={clickHandler}
-          className="text-blue-900 dark:text-blue-200 font-bold border-2 border-gray-300 dark:border-gray-600 rounded-lg w-14 bg-gray-200 dark:bg-gray-700 hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          className="cursor-pointer bg-blue-600 dark:bg-blue-700 text-white dark:text-gray-100 font-bold hover:bg-blue-700 dark:hover:bg-blue-500 rounded-full w-14   hover:scale-105   transition-all"
         >
           Stop
         </button>

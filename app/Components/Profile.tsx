@@ -2,11 +2,12 @@ import { useState , useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Button } from "@/components/ui/button"; // if you use shadcn
 import { signOut } from "../actions"; // your signOut function
+import { useTransition } from "react";
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const [userName , setUserName] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     async function fetchName() {
@@ -23,9 +24,7 @@ export default function Profile() {
         }
       } catch (err) {
         console.error("Failed to fetch users:", err);
-      } finally {
-        setLoading(false);
-      }
+      } 
     }
   
     fetchName();
@@ -49,10 +48,11 @@ export default function Profile() {
       </div>
       {open && (
         <Button
-          onClick={signOut}
-          className="mt-2 text-md font-bold w-full bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
+          onClick={()=>{ startTransition(() => { signOut(); });}}
+          disabled = {isPending}
+          className="mt-2 text-md font-bold w-full bg-blue-600 dark:bg-blue-700 rounded-md p-2 text-blue-50   hover:bg-blue-700 dark:hover:bg-blue-500 transition-transform duration-500 ease-linear "
         >
-          Logout
+          {isPending ? "Signing Out…" : "Sign Out"}
         </Button>
       )}
     </div>

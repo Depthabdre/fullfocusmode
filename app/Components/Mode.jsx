@@ -2,7 +2,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function Mode({ mode, setMode, isPause }) {
+function Mode({ mode, setMode, isRun }) {
   const [onEdit, setOnEdit] = useState(true);
 
   function editHandler() {
@@ -47,10 +47,10 @@ function Mode({ mode, setMode, isPause }) {
             {mode || "No Mode Set"}
           </p>
 
-          {isPause && (
+          {(!onEdit && !isRun) && (
             <button
               onClick={editHandler}
-              className="bg-green-500 dark:bg-green-700 text-white dark:text-gray-100 py-2 px-4 rounded-md hover:bg-green-600 dark:hover:bg-green-500 transition"
+              className="cursor-pointer bg-blue-400 dark:bg-blue-500 text-white dark:text-gray-200 text-center w-20 h-8 font-bold rounded-xl hover:bg-blue-500 dark:hover:bg-blue-400 transition"
             >
               Edit
             </button>

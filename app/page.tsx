@@ -189,7 +189,7 @@ export default function App() {
     <>
       <ThemeToggle />
       <Profile />
-      <Mode isPause={isPause} mode={mode} setMode={setMode} />
+      <Mode isRun={isRun} mode={mode} setMode={setMode} />
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4  justify-center md:max-w-4xl max-w-md mx-auto h-full    items-stretch">
         {isRun ? (
           <TimeStarter
