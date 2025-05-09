@@ -43,7 +43,7 @@ function Mode({ mode, setMode, isRun }) {
         </>
       ) : (
         <>
-          <p className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+          <p className="text-4xl font-extrabold text-blue-950 dark:text-blue-100">
             {mode || "No Mode Set"}
           </p>
 
